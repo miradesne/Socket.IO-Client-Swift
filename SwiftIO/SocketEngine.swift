@@ -489,11 +489,13 @@ public class SocketEngine: NSObject, WebSocketDelegate {
         
         // Remove message type
         message.removeAtIndex(message.startIndex)
-        
-        dispatch_async(self.client.handleQueue) {[weak self] in
-            self?.client.parseSocketMessage(message)
-            return
+        if(message.length > 0) {
+            dispatch_async(self.client.handleQueue) {[weak self] in
+                self?.client.parseSocketMessage(message)
+                return
+            }
         }
+        
     }
     
     private func probeWebSocket() {
